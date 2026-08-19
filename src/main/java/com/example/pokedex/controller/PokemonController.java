@@ -1,10 +1,10 @@
-package pokedex.controller;
+package com.example.pokedex.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pokedex.entity.PokemonEntity;
-import pokedex.repository.PokemonRepository;
+import com.example.pokedex.entity.PokemonEntity;
+import com.example.pokedex.repository.PokemonRepository;
 import java.util.List;
 
 import java.util.Optional;
