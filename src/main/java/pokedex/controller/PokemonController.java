@@ -35,4 +35,10 @@ public class PokemonController {
 
     @PostMapping
     public ResponseEntity<PokemonEntity> criarPokemon(
+            @RequestBody PokemonEntity pokemon) {
+
+        PokemonEntity novoPokemon = pokemonRepository.save(pokemon);
+
+        return ResponseEntity.ok(novoPokemon);
+    }
 }
