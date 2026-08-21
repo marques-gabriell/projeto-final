@@ -15,6 +15,16 @@ const pokemonPeso = document.getElementById("pokemonPeso");
 const botaoSalvar = document.getElementById("btnSalvar");
 const listaPokemons = document.getElementById("listaPokemons");
 
+const botaoAtualizar = document.getElementById("btnAtualizar");
+
+const campoNome = document.getElementById("campoNome");
+const campoTipo = document.getElementById("campoTipo");
+const campoAltura = document.getElementById("campoAltura");
+const campoPeso = document.getElementById("campoPeso");
+const campoImagem = document.getElementById("campoImagem");
+
+let pokemonEditandoId = null;
+
 // Esconde o resultado inicialmente
 resultadoPokemon.style.display = "none";
 
@@ -164,6 +174,14 @@ async function listarPokemons() {
                 <p>Tipo: ${pokemon.tipo}</p>
                 <p>Altura: ${pokemon.altura} m</p>
                 <p>Peso: ${pokemon.peso} kg</p>
+
+                <button onclick="editarPokemon(${pokemon.id})">
+                 ✏️ Editar
+                </button>
+
+                <button onclick="deletarPokemon(${pokemon.id})">
+                    🗑️ Excluir
+                </button>
             `;
 
             listaPokemons.appendChild(card);
@@ -178,7 +196,149 @@ async function listarPokemons() {
     }
 }
 
+// Deletar Pokémon
+async function deletarPokemon(id) {
+
+    const confirmar = confirm("Deseja realmente excluir este Pokémon?");
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+
+        const resposta = await fetch(`http://localhost:8080/pokemons/${id}`, {
+            method: "DELETE"
+        });
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao excluir o Pokémon.");
+        }
+
+        mensagem.textContent = "Pokémon excluído com sucesso!";
+
+        listarPokemons();
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        mensagem.textContent =
+            "Não foi possível excluir o Pokémon.";
+    }
+}
+
+// Editar Pokémon
+async function editarPokemon(id) {
+
+    try {
+
+        const resposta = await fetch(`http://localhost:8080/pokemons/${id}`);
+
+        if (!resposta.ok) {
+            throw new Error("Pokémon não encontrado.");
+        }
+
+        const pokemon = await resposta.json();
+
+        console.log("Pokémon recebido:", pokemon);
+
+        pokemonEditandoId = pokemon.id;
+
+        campoNome.value = pokemon.nome;
+        campoTipo.value = pokemon.tipo;
+        campoAltura.value = pokemon.altura;
+        campoPeso.value = pokemon.peso;
+        campoImagem.value = pokemon.imagem;
+
+        pokemonImagem.src = pokemon.imagem;
+        pokemonImagem.alt = pokemon.nome;
+
+        pokemonNome.textContent =
+            pokemon.nome.charAt(0).toUpperCase() +
+            pokemon.nome.slice(1);
+
+        resultadoPokemon.style.display = "block";
+
+        botaoSalvar.style.display = "none";
+        botaoAtualizar.style.display = "inline-block";
+
+        mensagem.textContent =
+            "Edite os dados e clique em Atualizar Pokémon.";
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        mensagem.textContent =
+            "Não foi possível carregar o Pokémon.";
+    }
+}
+
+
+// Atualizar Pokémon
+async function atualizarPokemon() {
+
+    if (!pokemonEditandoId) {
+        mensagem.textContent = "Nenhum Pokémon selecionado para edição.";
+        return;
+    }
+
+    const pokemonAtualizado = {
+
+        nome: campoNome.value,
+        tipo: campoTipo.value,
+        altura: parseFloat(campoAltura.value),
+        peso: parseFloat(campoPeso.value),
+        imagem: campoImagem.value
+
+    };
+
+    console.log("Enviando PUT:", pokemonAtualizado);
+
+    try {
+
+        const resposta = await fetch(
+            `http://localhost:8080/pokemons/${pokemonEditandoId}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(pokemonAtualizado)
+            }
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao atualizar o Pokémon.");
+        }
+
+        mensagem.textContent =
+            "Pokémon atualizado com sucesso!";
+
+        pokemonEditandoId = null;
+
+        botaoSalvar.style.display = "inline-block";
+        botaoAtualizar.style.display = "none";
+
+        listarPokemons();
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        mensagem.textContent =
+            "Não foi possível atualizar o Pokémon.";
+    }
+}
+
 // Botão Salvar
 botaoSalvar.addEventListener("click", salvarPokemon);
 
+// Botão Atualizar
+botaoAtualizar.addEventListener("click", atualizarPokemon);
+
+// Carrega os Pokémon salvos
 listarPokemons();

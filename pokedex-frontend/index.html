@@ -35,19 +35,40 @@
         </section>
 
         <section id="resultadoPokemon" class="pokemon-card">
+
             <h2>Resultado</h2>
 
             <img id="pokemonImagem" src="" alt="">
 
             <h3 id="pokemonNome"></h3>
 
-            <p>Tipo: <span id="pokemonTipo"></span></p>
-            <p>Altura: <span id="pokemonAltura"></span></p>
-            <p>Peso: <span id="pokemonPeso"></span></p>
+            <div class="campos-edicao">
+
+                <label for="campoNome">Nome:</label>
+                <input type="text" id="campoNome">
+
+                <label for="campoTipo">Tipo:</label>
+                <input type="text" id="campoTipo">
+
+                <label for="campoAltura">Altura:</label>
+                <input type="number" id="campoAltura" step="0.1">
+
+                <label for="campoPeso">Peso:</label>
+                <input type="number" id="campoPeso" step="0.1">
+
+                <label for="campoImagem">Imagem:</label>
+                <input type="text" id="campoImagem">
+
+            </div>
 
             <button id="btnSalvar">
                 💾 Salvar Pokémon
             </button>
+
+            <button id="btnAtualizar" style="display: none;">
+                ✏️ Atualizar Pokémon
+            </button>
+
         </section>
 
         <section class="pokemons-salvos">
