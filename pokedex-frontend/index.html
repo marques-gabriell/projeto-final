@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pokédex</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Pokédex</h1>
+        <p>Pesquise, salve e gerencie seus Pokémon</p>
+    </header>
+
+    <main>
+
+        <section class="busca">
+            <h2>Buscar Pokémon</h2>
+
+            <input
+                type="text"
+                id="pokemonBusca"
+                placeholder="Digite o nome do Pokémon"
+            >
+
+            <button id="btnBuscar">
+                Buscar
+            </button>
+
+            <p id="mensagem"></p>
+        </section>
+
+        <section id="resultadoPokemon" class="pokemon-card">
+            <h2>Resultado</h2>
+
+            <img id="pokemonImagem" src="" alt="">
+
+            <h3 id="pokemonNome"></h3>
+
+            <p>Tipo: <span id="pokemonTipo"></span></p>
+            <p>Altura: <span id="pokemonAltura"></span></p>
+            <p>Peso: <span id="pokemonPeso"></span></p>
+
+            <button id="btnSalvar">
+                💾 Salvar Pokémon
+            </button>
+        </section>
+
+        <section class="pokemons-salvos">
+
+            <h2>Pokémon Salvos</h2>
+
+            <div id="listaPokemons">
+                <!-- Os Pokémon salvos aparecerão aqui -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
